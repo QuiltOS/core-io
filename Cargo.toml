@@ -3,6 +3,12 @@ name = "coreio"
 version = "0.0.1"
 authors = []
 
+
+[dependencies.core]
+git = "https://github.com/RustOS-Fork-Holding-Ground/rust"
+branch = "rustos"
+
 [dependencies.void]
-version = "1"
+git = "https://github.com/RustOS-Fork-Holding-Ground/rust-void"
+branch = "rustos"
 default-features = false
