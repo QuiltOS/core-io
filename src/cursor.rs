@@ -27,10 +27,13 @@ impl<'a> Read for Cursor<&'a [u8]> {
 		Ok(len)
 	}
 
-	fn read_all<E=EndOfFile>(&mut self, buf: &mut [u8]) -> Result<(), E>
+	fn read_all<E>(&mut self, buf: &mut [u8]) -> Result<(), E>
 		where E: From<Void> + From<EndOfFile>
 	{
-		try!((&self.inner[self.pos as usize..]).read_all(buf));
+		match (&self.inner[self.pos as usize..]).read_all(buf) {
+			Ok(()) => (),
+			e @ Err(_) => return e,
+		};
 		self.pos += buf.len() as u64;
 		Ok(())
 	}
@@ -46,10 +49,13 @@ impl<'a> Write for Cursor<&'a mut [u8]> {
 		Ok(len)
 	}
 
-	fn write_all<E=EndOfFile>(&mut self, buf: &[u8]) -> Result<(), E>
+	fn write_all<E>(&mut self, buf: &[u8]) -> Result<(), E>
 		where E: From<Void> + From<EndOfFile>
 	{
-		try!((&mut self.inner[self.pos as usize..]).write_all(buf));
+		match (&mut self.inner[self.pos as usize..]).write_all(buf) {
+			Ok(()) => (),
+			e @ Err(_) => return e,
+		};
 		self.pos += buf.len() as u64;
 		Ok(())
 	}

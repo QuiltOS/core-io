@@ -7,7 +7,9 @@ impl<'a, R: Read> Read for &'a mut R {
 		(**self).read(buf)
 	}
 
-	fn read_all<E=<Self as Read>::Err>(&mut self, buf: &mut [u8]) -> Result<(), E> where E: From<R::Err> + From<EndOfFile> {
+	fn read_all<E>(&mut self, buf: &mut [u8]) -> Result<(), E>
+		where E: From<R::Err> + From<EndOfFile>
+	{
 		(**self).read_all(buf)
 	}
 }
@@ -19,7 +21,9 @@ impl<'a, W: Write> Write for &'a mut W {
 		(**self).write(buf)
 	}
 
-	fn write_all<E=<Self as Write>::Err>(&mut self, buf: &[u8]) -> Result<(), E> where E: From<W::Err> + From<EndOfFile> {
+	fn write_all<E>(&mut self, buf: &[u8]) -> Result<(), E>
+                where E: From<W::Err> + From<EndOfFile>
+	{
 		(**self).write_all(buf)
 	}
 }

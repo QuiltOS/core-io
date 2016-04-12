@@ -1,6 +1,4 @@
 #![no_std]
-#![feature(no_std)]
-#![feature(core_slice_ext, core_str_ext, slice_bytes)]
 
 extern crate void;
 
@@ -45,7 +43,7 @@ pub trait Read {
 
 	fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Err>;
 
-	fn read_all<E=<Self as Read>::Err>(&mut self, mut buf: &mut [u8]) -> Result<(), E>
+	fn read_all<E>(&mut self, mut buf: &mut [u8]) -> Result<(), E>
 		where E: From<Self::Err> + From<EndOfFile>
 	{
 		while buf.len() > 0 {
@@ -66,7 +64,7 @@ pub trait Write {
 
 	fn write(&mut self, buf: &[u8]) -> Result<usize, Self::Err>;
 
-	fn write_all<E=<Self as Write>::Err>(&mut self, mut buf: &[u8]) -> Result<(), E>
+	fn write_all<E>(&mut self, mut buf: &[u8]) -> Result<(), E>
 		where E: From<Self::Err> + From<EndOfFile>
 	{
 		while buf.len() > 0 {
@@ -78,7 +76,7 @@ pub trait Write {
 		Ok(())
 	}
 
-	fn write_fmt<E=<Self as Write>::Err>(&mut self, fmt: fmt::Arguments) -> Result<(), E>
+	fn write_fmt<E>(&mut self, fmt: fmt::Arguments) -> Result<(), E>
 		where E: From<Self::Err> + From<EndOfFile>
 	{
 		// Create a shim which translates a Write to a fmt::Write and saves
